@@ -21,10 +21,10 @@ const recursos: Recurso[] = [
   {
     icon: FileText,
     title: "Ficha de notificación",
-    body: "Formato sugerido para notificar casos sospechosos al estudio multicéntrico.",
-    cta: "Descargar PDF",
+    body: "Ficha oficial INS para notificación del Evento 900 (evento sin establecer) — formato bajo el cual se reporta la EMPB en Colombia.",
+    cta: "Descargar PDF · INS",
     kind: "link",
-    href: "/docs/ficha-notificacion.pdf",
+    href: "https://www.ins.gov.co/buscador-eventos/Lineamientos/900_Evento_Sin_Establecer_2024.pdf",
   },
   {
     icon: ClipboardList,
@@ -193,9 +193,11 @@ function RecursoCard({
     );
   }
 
+  const isExternal = !!href && /^https?:\/\//.test(href);
   return (
     <a
       href={href}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className="group flex gap-5 rounded-2xl border border-slate-200 bg-white p-7 shadow-card hover:shadow-card-hover hover:border-brand-teal/40 transition"
     >
       {inner}
