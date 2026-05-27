@@ -4,16 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import {
-  FileText,
-  ClipboardList,
-  BookOpen,
-  Users,
-  X,
-  Download,
-  Mail,
-  Clock,
-} from "lucide-react";
+import { FileText, ClipboardList, BookOpen, Users, X, Download } from "lucide-react";
 
 type RecursoKind = "link" | "anchor" | "modal-padres" | "modal-medicos";
 
@@ -53,8 +44,8 @@ const recursos: Recurso[] = [
   {
     icon: BookOpen,
     title: "Material educativo para médicos",
-    body: "Revisión clínica resumida con bibliografía clave sobre EMPB y enterovirus.",
-    cta: "Ver disponibilidad",
+    body: "Guía clínica rápida: etiología, complicaciones EV-A71, criterios de hospitalización y notificación SIVIGILA.",
+    cta: "Ver infografía",
     kind: "modal-medicos",
   },
 ];
@@ -130,26 +121,29 @@ export function Recursos() {
       )}
 
       {modal === "medicos" && (
-        <Modal
-          onClose={() => setModal(null)}
-          title="Material educativo para médicos"
-        >
-          <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-10 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal/15 text-brand-teal">
-              <Clock className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 font-display text-xl font-bold text-brand-navy tracking-tight">
-              En preparación
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-slate-600 max-w-md mx-auto">
-              La infografía técnica para profesionales de la salud (etiología, complicaciones EV-A71, criterios de hospitalización, notificación SIVIGILA) se publicará próximamente en este sitio.
+        <Modal onClose={() => setModal(null)} title="Material educativo para médicos">
+          <div className="relative w-full">
+            <Image
+              src="/educativo/medicos.png"
+              alt="Infografía técnica para profesionales de la salud sobre la enfermedad mano-pie-boca: etiología y serotipos, presentación clínica, diagnóstico, complicaciones EV-A71, manejo ambulatorio, criterios de hospitalización, notificación SIVIGILA y epidemiología Colombia 2019–2026."
+              width={1600}
+              height={1000}
+              sizes="(min-width: 1024px) 900px, 100vw"
+              className="h-auto w-full rounded-lg"
+              priority
+            />
+          </div>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-slate-500 italic max-w-2xl">
+              Material educativo del estudio EMPB Colombia. Fuentes: CDC, AAP Red Book, OPS/PAHO Alerta Epidemiológica EMPB 26-mar-2025, INS Colombia RENS 2022;4(4):4-19, Mandell.
             </p>
             <a
-              href="mailto:ifgutierrez@colsanitas.com?subject=Solicitud%20de%20material%20educativo%20para%20m%C3%A9dicos%20%E2%80%94%20EMPB%20Colombia"
-              className="mt-6 inline-flex items-center gap-2 rounded-xl border-2 border-brand-navy bg-transparent px-5 py-2.5 text-sm font-semibold text-brand-navy hover:bg-brand-navy hover:text-white transition"
+              href="/educativo/medicos.png"
+              download="EMPB-Colombia-material-medicos.png"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy-deep transition self-start sm:self-auto"
             >
-              <Mail className="h-4 w-4" />
-              Solicitar acceso anticipado
+              <Download className="h-4 w-4" />
+              Descargar imagen
             </a>
           </div>
         </Modal>
