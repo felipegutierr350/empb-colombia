@@ -1,11 +1,27 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ImageIcon, Stethoscope } from "lucide-react";
+import { Stethoscope, Microscope } from "lucide-react";
 
 const fotos = [
-  { label: "Foto clínica 1", caption: "Lesiones vesiculares en manos" },
-  { label: "Foto clínica 2", caption: "Lesiones orales / estomatitis" },
-  { label: "Foto clínica 3", caption: "Lesiones en pies" },
+  {
+    src: "/clinical/boca.png",
+    alt: "Niño con lesiones periorales y vesículas en mucosa oral, característico de la enfermedad mano-pie-boca",
+    location: "Boca y cara",
+    detail: "Lesiones peribucales · estomatitis vesicular",
+  },
+  {
+    src: "/clinical/manos.png",
+    alt: "Palmas y dedos de un niño con vesículas eritematosas características de la enfermedad mano-pie-boca",
+    location: "Manos",
+    detail: "Vesículas en palmas, dedos y dorso",
+  },
+  {
+    src: "/clinical/pies.png",
+    alt: "Plantas de los pies de un niño con vesículas eritematosas características de la enfermedad mano-pie-boca",
+    location: "Pies",
+    detail: "Vesículas plantares y en dorso",
+  },
 ];
 
 const criterios = [
@@ -30,54 +46,82 @@ export function Clinica() {
           }
         />
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-5">
-          {/* Galería */}
-          <div className="lg:col-span-3">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500 mb-4">
-              Galería clínica
-            </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {fotos.map((f) => (
-                <figure
-                  key={f.label}
-                  className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 flex flex-col items-center justify-center text-center min-h-[200px]"
-                >
-                  <ImageIcon className="h-8 w-8 text-slate-400" />
-                  <figcaption className="mt-3 text-xs font-semibold text-slate-500">
-                    [{f.label}]
-                  </figcaption>
-                  <p className="mt-1 text-xs text-slate-500 leading-snug">
-                    {f.caption}
+        {/* Galería clínica — full width grid */}
+        <div className="mt-14">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500 mb-5">
+            Galería clínica
+          </p>
+          <div className="grid gap-5 sm:grid-cols-3">
+            {fotos.map((f) => (
+              <figure
+                key={f.location}
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card hover:shadow-card-hover transition"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-slate-50">
+                  <Image
+                    src={f.src}
+                    alt={f.alt}
+                    fill
+                    sizes="(min-width: 1024px) 360px, (min-width: 640px) 33vw, 100vw"
+                    className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                  />
+                </div>
+                <figcaption className="px-5 py-4 border-t border-slate-100">
+                  <p className="font-display text-sm font-bold text-brand-navy tracking-tight">
+                    {f.location}
                   </p>
-                </figure>
-              ))}
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                    {f.detail}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        {/* Criterios + nota RT-PCR */}
+        <div className="mt-14 grid gap-5 lg:grid-cols-12">
+          <div className="lg:col-span-7 rounded-2xl border border-brand-navy/15 bg-brand-surface p-7">
+            <div className="flex items-center gap-2 text-brand-navy">
+              <Stethoscope className="h-5 w-5" />
+              <h3 className="font-display text-lg font-bold tracking-tight">
+                Criterios clínicos sugeridos
+              </h3>
             </div>
-            <p className="mt-4 text-xs text-slate-500 italic">
-              Las imágenes clínicas se incorporarán al sitio próximamente, con consentimiento documentado.
-            </p>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+              {criterios.map((c) => (
+                <li
+                  key={c}
+                  className="flex gap-3 text-sm leading-relaxed text-slate-700"
+                >
+                  <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-teal" />
+                  <span>{c}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Criterios */}
-          <div className="lg:col-span-2">
-            <div className="rounded-2xl border border-brand-navy/20 bg-brand-surface p-7">
-              <div className="flex items-center gap-2 text-brand-navy">
-                <Stethoscope className="h-5 w-5" />
-                <h3 className="font-display text-lg font-bold tracking-tight">
-                  Criterios clínicos sugeridos
-                </h3>
-              </div>
-              <ul className="mt-5 space-y-3">
-                {criterios.map((c) => (
-                  <li key={c} className="flex gap-3 text-sm leading-relaxed text-slate-700">
-                    <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-teal" />
-                    <span>{c}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 text-xs text-slate-500 italic leading-relaxed">
-                El diagnóstico es predominantemente clínico. La confirmación virológica se realiza por RT-PCR de muestras de hisopado faríngeo, vesicular o materia fecal.
-              </p>
+          <div className="lg:col-span-5 rounded-2xl border border-slate-200 bg-white p-7">
+            <div className="flex items-center gap-2 text-brand-teal">
+              <Microscope className="h-5 w-5" />
+              <h3 className="font-display text-lg font-bold tracking-tight text-brand-navy">
+                Confirmación virológica
+              </h3>
             </div>
+            <p className="mt-4 text-sm leading-relaxed text-slate-600">
+              El diagnóstico es <strong className="text-brand-navy">predominantemente clínico</strong>. Cuando se requiere confirmación, se realiza por <strong className="text-brand-navy">RT-PCR</strong> de muestras de:
+            </p>
+            <ul className="mt-3 space-y-1.5 text-sm text-slate-700">
+              <li className="flex gap-2">
+                <span className="text-brand-teal">·</span> Hisopado faríngeo
+              </li>
+              <li className="flex gap-2">
+                <span className="text-brand-teal">·</span> Líquido vesicular
+              </li>
+              <li className="flex gap-2">
+                <span className="text-brand-teal">·</span> Materia fecal
+              </li>
+            </ul>
           </div>
         </div>
       </Container>

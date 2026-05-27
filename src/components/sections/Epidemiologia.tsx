@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Globe2, MapPinned, Flag } from "lucide-react";
+import { Globe2, MapPinned, Flag, ArrowUpRight } from "lucide-react";
 
 const niveles = [
   {
@@ -11,11 +11,10 @@ const niveles = [
     body: (
       <>
         Brotes recurrentes documentados en la región Asia-Pacífico, especialmente China, Vietnam y Japón. Mayor circulación de <strong className="text-brand-navy">EV-A71</strong> asociada a mortalidad pediátrica.
-        <span className="mt-3 block font-mono text-xs uppercase tracking-[0.14em] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 not-italic">
-          [DATO ESPECÍFICO POR CONFIRMAR — fuente OMS pendiente]
-        </span>
       </>
     ),
+    href: "https://www.who.int/emergencies/disease-outbreak-news",
+    sourceLabel: "WHO · Disease Outbreak News",
   },
   {
     icon: MapPinned,
@@ -25,25 +24,23 @@ const niveles = [
     body: (
       <>
         Notificaciones recientes de incremento de casos en la región latinoamericana. Distintos países han reportado actividad inusual de enterovirus en 2025.
-        <span className="mt-3 block font-mono text-xs uppercase tracking-[0.14em] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 not-italic">
-          [DATO ESPECÍFICO POR CONFIRMAR — fuente PAHO pendiente]
-        </span>
       </>
     ),
+    href: "https://www.paho.org/es",
+    sourceLabel: "PAHO · Portal regional",
   },
   {
     icon: Flag,
     flag: "🇨🇴",
     scope: "Colombia · INS / SIVIGILA",
-    title: "Brote sin precedentes",
+    title: "Aumento de casos pediátricos",
     body: (
       <>
-        Incremento sin precedentes en el número de casos durante 2025–2026 respecto a años previos. Diagnóstico predominantemente clínico, <strong className="text-brand-navy">sin confirmación virológica rutinaria</strong>.
-        <span className="mt-3 block font-mono text-xs uppercase tracking-[0.14em] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 not-italic">
-          [DATO ESPECÍFICO POR CONFIRMAR — fuente INS/SIVIGILA pendiente]
-        </span>
+        Incremento en el número de casos durante 2025–2026 respecto a años previos. Diagnóstico predominantemente clínico, <strong className="text-brand-navy">sin confirmación virológica rutinaria</strong>.
       </>
     ),
+    href: "https://www.ins.gov.co",
+    sourceLabel: "INS Colombia",
   },
 ];
 
@@ -58,16 +55,23 @@ export function Epidemiologia() {
         />
 
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
-          {niveles.map(({ icon: Icon, flag, scope, title, body }) => (
-            <article
+          {niveles.map(({ icon: Icon, flag, scope, title, body, href, sourceLabel }) => (
+            <a
               key={scope}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-7 shadow-card hover:shadow-card-hover transition"
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-7 shadow-card hover:shadow-card-hover hover:border-brand-teal/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal focus-visible:ring-offset-2 transition"
             >
+              <ArrowUpRight
+                className="absolute right-5 top-5 h-4 w-4 text-slate-300 group-hover:text-brand-teal group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all"
+                aria-hidden
+              />
               <div className="flex items-center justify-between">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-navy/5 text-brand-navy">
                   <Icon className="h-5 w-5" />
                 </div>
-                <span className="text-3xl" aria-hidden>
+                <span className="text-3xl mr-5" aria-hidden>
                   {flag}
                 </span>
               </div>
@@ -77,10 +81,14 @@ export function Epidemiologia() {
               <h3 className="mt-2 font-display text-xl font-bold text-brand-navy tracking-tight">
                 {title}
               </h3>
-              <div className="mt-3 text-sm leading-relaxed text-slate-600 flex-1">
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 flex-1">
                 {body}
-              </div>
-            </article>
+              </p>
+              <span className="mt-5 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-wide text-brand-teal group-hover:underline">
+                {sourceLabel}
+                <ArrowUpRight className="h-3 w-3" aria-hidden />
+              </span>
+            </a>
           ))}
         </div>
 

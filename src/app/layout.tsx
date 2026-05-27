@@ -24,7 +24,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Boca-mano-pie en Colombia: qué está pasando | VIRAL Network LATAM",
+  title: "Boca-mano-pie en Colombia: qué está pasando",
   description:
     "Información clínica y científica para médicos en Colombia sobre el brote de enfermedad mano-pie-boca (EMPB). Estudio observacional prospectivo multicéntrico.",
   keywords: [
