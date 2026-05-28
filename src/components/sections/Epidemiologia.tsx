@@ -45,9 +45,9 @@ const historico: HistoricoBar[] = [
   { periodo: "2020", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022" },
   { periodo: "2021", casos: 10, tone: "navy", notaTooltip: "INS · RENS 2022" },
   { periodo: "Q1 2022", casos: 204, tone: "accent", notaTooltip: "INS · RENS 2022 · pico SE 13" },
-  { periodo: "2022*", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado posterior a Q1 2022" },
-  { periodo: "2023", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado" },
-  { periodo: "2024", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado" },
+  { periodo: "2022*", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado posterior a Q1 2022. INS confirma brotes en Santander, Caldas, Cundinamarca y Norte de Santander." },
+  { periodo: "2023‡", casos: 43, tone: "navy", notaTooltip: "BES INS SE 21/2023 · Tabla 1 · 43 observados vs 89 esperados (razón 0,48 · por debajo del histórico)" },
+  { periodo: "2024", casos: 0, tone: "muted", notaTooltip: "Sin tematización EMPB en BES INS 2024 revisados (SE 13, 25, 49)" },
   { periodo: "2025†", casos: 642, tone: "accent", asterisk: true, notaTooltip: "Suma territorial: Caldas 390 + Valle 170 + Cartagena 50 + Cali 32" },
 ];
 
@@ -232,7 +232,7 @@ export function Epidemiologia() {
           icon={<TrendingUp className="h-5 w-5" />}
           kicker="Gráfico 1 · Colombia"
           title="Casos notificados · 2019 – 2025"
-          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · DTS Caldas · INS comunicado Cartagena · Sec. Salud Valle · Consultor Salud (2025)"
+          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · INS BES SE 21/2023 Tabla 1 (2023) · DTS Caldas · INS comunicado Cartagena · Sec. Salud Valle · Consultor Salud (2025)"
           height={320}
         >
           <ResponsiveContainer width="100%" height="100%">
@@ -296,13 +296,19 @@ export function Epidemiologia() {
 
         <div className="mt-4 rounded-2xl border border-amber-200/70 bg-amber-50/60 p-5 text-sm leading-relaxed text-slate-700">
           <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber-700 mb-2">
-            ⓘ Brecha de vigilancia 2022–2024
+            ⓘ Notas sobre la vigilancia 2022–2025
           </p>
           <p>
-            El INS <strong className="text-brand-navy">no publica</strong> una cifra anual consolidada de EMPB para 2022 completo, 2023 ni 2024 porque el evento se reporta bajo <strong className="text-brand-navy">Código 900 — Evento sin establecer</strong>. Los datos previos a Q1 2022 provienen del análisis geoespacial de Velásquez et al. (RENS 2022;4(4):4-19).
+            La EMPB se reporta bajo el evento <strong className="text-brand-navy">Código 900 — Evento sin establecer</strong> de SIVIGILA, por lo que el INS no publica cifras anuales consolidadas de forma rutinaria. Los datos visibles aquí provienen de las publicaciones específicas en las que el INS sí caracterizó EMPB.
           </p>
           <p className="mt-2">
-            <strong>† La cifra 2025 (642+)</strong> es la <em>suma de comunicados territoriales</em> verificables (Caldas 390 a SE 20 · Valle del Cauca &gt;170 · Cartagena 50 · Cali 32) y <strong>NO representa un total nacional consolidado</strong>. Cifras adicionales reportadas en Pereira, Boyacá (18 brotes), Bogotá (Circular 008/2024) y otros departamentos quedan fuera por no tener un denominador comparable.
+            <strong>‡ 2023:</strong> En la <em>Tabla 1 del BES SE 21/2023</em>, el INS reportó <strong className="text-brand-navy">43 casos observados</strong> a SE 20 contra 89 esperados (razón 0,48 — por debajo del histórico). Año relativamente más tranquilo tras el pico de 2022.
+          </p>
+          <p className="mt-2">
+            <strong>* 2022 (resto):</strong> sin cifra anual publicada. El INS sí confirma textualmente brotes en Santander, Caldas, Cundinamarca y Norte de Santander durante 2022.
+          </p>
+          <p className="mt-2">
+            <strong>† 2025 (642+):</strong> <em>suma de comunicados territoriales</em> verificables (Caldas 390 a SE 20 · Valle del Cauca &gt;170 · Cartagena 50 · Cali 32). <strong>NO es un total nacional consolidado.</strong> Cifras adicionales en Pereira, Boyacá (18 brotes) y Bogotá quedan fuera por denominador incomparable.
           </p>
         </div>
 
