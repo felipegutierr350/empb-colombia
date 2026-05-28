@@ -21,6 +21,7 @@ import {
   AlertTriangle,
   Map,
   School,
+  Sparkles,
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -48,7 +49,8 @@ const historico: HistoricoBar[] = [
   { periodo: "2022*", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado posterior a Q1 2022. INS confirma brotes en Santander, Caldas, Cundinamarca y Norte de Santander." },
   { periodo: "2023‡", casos: 43, tone: "navy", notaTooltip: "BES INS SE 21/2023 · Tabla 1 · 43 observados vs 89 esperados (razón 0,48 · por debajo del histórico)" },
   { periodo: "2024", casos: 0, tone: "muted", notaTooltip: "Sin tematización EMPB en BES INS 2024 revisados (SE 13, 25, 49)" },
-  { periodo: "2025†", casos: 642, tone: "accent", asterisk: true, notaTooltip: "Suma territorial: Caldas 390 + Valle 170 + Cartagena 50 + Cali 32" },
+  { periodo: "2025†", casos: 723, tone: "accent", asterisk: true, notaTooltip: "Suma territorial: Caldas 390 + Valle 170 + Dosquebradas 81 + Cartagena 50 + Cali 32" },
+  { periodo: "2026§", casos: 2, tone: "navy", notaTooltip: "Boyacá · 2 brotes a marzo 2026 (Sec. Salud Boyacá) — datos preliminares" },
 ];
 
 const porDepartamento = [
@@ -79,12 +81,20 @@ const colombia2025 = [
     fuente: "INS / Consultor Salud (9 jun 2025)",
   },
   {
+    ubicacion: "Dosquebradas (Risaralda)",
+    casos: 81,
+    fecha: "Mayo 2025",
+    detalle:
+      "81 menores en 15 días (desde 30 abr) · jardines y colegios: Pequeños Genios, Casa del Saber, Liceo Pegotes, I.E. Bernardo López, Diocesano, Salesiano",
+    fuente: "Alcaldía Dosquebradas · El Diario Risaralda",
+  },
+  {
     ubicacion: "Cartagena (Bolívar)",
     casos: 50,
     fecha: "Jul–Sep 2025",
     detalle:
-      "34 casos en CDI aeioTU Manzanillo (jul, cerrado 24-ago) + 16 casos en 2 instituciones (sep)",
-    fuente: "INS Colombia",
+      "3 brotes · CDI aeioTU Manzanillo 34 (jul, cerrado 24-ago) + CDI aeioTU Bicentenario 5 (sep) + Ingenios Manga 11 (sep)",
+    fuente: "INS Colombia · DADIS · LDSP Bolívar",
   },
   {
     ubicacion: "Cali",
@@ -92,6 +102,19 @@ const colombia2025 = [
     fecha: "2025",
     detalle: "32 casos en menores · Valle del Cauca",
     fuente: "Consultor Salud (cita INS)",
+  },
+];
+
+// Contexto regional 2026 — brotes en otros países de las Américas
+const regional2026 = [
+  {
+    pais: "Perú",
+    flag: "🇵🇪",
+    casos: "1.658",
+    fecha: "Al 10 may 2026",
+    nota: "vs 777 todo 2025 · más del doble · Lambayeque, Cusco, Huancavelica, Junín",
+    fuente: "MINSA / CNE — Dr. César Munayco",
+    tone: "amber" as const,
   },
 ];
 
@@ -231,8 +254,8 @@ export function Epidemiologia() {
         <ChartCard
           icon={<TrendingUp className="h-5 w-5" />}
           kicker="Gráfico 1 · Colombia"
-          title="Casos notificados · 2019 – 2025"
-          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · INS BES SE 21/2023 Tabla 1 (2023) · DTS Caldas · INS comunicado Cartagena · Sec. Salud Valle · Consultor Salud (2025)"
+          title="Casos notificados · 2019 – 2026"
+          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · INS BES SE 21/2023 Tabla 1 (2023) · DTS Caldas · INS comunicado Cartagena · Sec. Salud Valle · Alcaldía Dosquebradas (2025) · Sec. Salud Boyacá (2026)"
           height={320}
         >
           <ResponsiveContainer width="100%" height="100%">
@@ -308,7 +331,13 @@ export function Epidemiologia() {
             <strong>* 2022 (resto):</strong> sin cifra anual publicada. El INS sí confirma textualmente brotes en Santander, Caldas, Cundinamarca y Norte de Santander durante 2022.
           </p>
           <p className="mt-2">
-            <strong>† 2025 (642+):</strong> <em>suma de comunicados territoriales</em> verificables (Caldas 390 a SE 20 · Valle del Cauca &gt;170 · Cartagena 50 · Cali 32). <strong>NO es un total nacional consolidado.</strong> Cifras adicionales en Pereira, Boyacá (18 brotes) y Bogotá quedan fuera por denominador incomparable.
+            <strong>† 2025 (723+):</strong> <em>suma de comunicados territoriales</em> verificables (Caldas 390 a SE 20 · Valle del Cauca &gt;170 · Dosquebradas 81 · Cartagena 50 · Cali 32). <strong>NO es un total nacional consolidado.</strong>
+          </p>
+          <p className="mt-2">
+            <strong>§ 2026:</strong> Boyacá reporta <strong>2 brotes a marzo 2026</strong> (Sec. Salud Boyacá). Datos preliminares — el resto del país aún sin reporte INS consolidado para 2026.
+          </p>
+          <p className="mt-3 pt-3 border-t border-amber-200/60">
+            <strong className="text-brand-navy">Departamentos con brotes verificados durante 2025–2026:</strong> Caldas · Valle del Cauca · Bolívar (Cartagena) · Risaralda (Pereira + Dosquebradas) · Bogotá · Cundinamarca (Cajicá) · Boyacá (16 brotes en 13 municipios) · Atlántico. <em>Los departamentos sin cifra puntual no se incluyen en el agregado 723+.</em>
           </p>
         </div>
 
@@ -449,7 +478,7 @@ export function Epidemiologia() {
             </ResponsiveContainer>
           </ChartCard>
           <p className="mt-3 text-sm text-slate-600 max-w-3xl">
-            <strong className="text-brand-navy">Más de 640 casos documentados</strong> en cuatro territorios durante 2025 (Caldas, Valle del Cauca, Cartagena y Cali). Los valores corresponden a comunicados territoriales con corte distinto; <em>no</em> representan un total nacional consolidado.
+            <strong className="text-brand-navy">Más de 720 casos documentados</strong> en cinco territorios durante 2025 (Caldas, Valle del Cauca, Risaralda·Dosquebradas, Cartagena y Cali). Los valores corresponden a comunicados territoriales con corte distinto; <em>no</em> representan un total nacional consolidado.
           </p>
 
           {/* Detalle visible debajo del gráfico — cada territorio expandido */}
@@ -525,6 +554,29 @@ export function Epidemiologia() {
           </div>
         </div>
 
+        {/* HALLAZGO CRÍTICO · Tipificación viral 2025 */}
+        <div className="mt-10 rounded-2xl border-2 border-brand-teal/40 bg-white p-6 lg:p-8 shadow-card">
+          <div className="flex items-start gap-4">
+            <span className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal">
+              <Sparkles className="h-5 w-5" />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-teal">
+                Hallazgo crítico · Tipificación viral 2025
+              </p>
+              <h3 className="mt-1 font-display text-xl sm:text-2xl font-bold text-brand-navy tracking-tight">
+                Primera evidencia oficial publicada de circulación de EV-A71 en Colombia
+              </h3>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-700">
+                <strong className="text-brand-navy">Septiembre 2025:</strong> el DADIS Cartagena, con apoyo del Laboratorio Departamental de Salud Pública de Bolívar y el Laboratorio Nacional de Referencia del INS, confirmó la circulación documentada de <strong>Coxsackievirus A</strong>, <strong>Coxsackievirus B</strong> y <strong className="text-brand-accent">Enterovirus A71 (EV-A71)</strong> en los brotes activos. Esta es la primera evidencia oficial publicada de circulación de EV-A71 en Colombia en el contexto del brote 2025.
+              </p>
+              <p className="mt-3 font-mono text-[10px] uppercase tracking-wide text-slate-500">
+                Fuente: DADIS Cartagena · INS · Laboratorio Departamental de Salud Pública de Bolívar (sep 2025)
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* TABLA 4 — Brotes Américas 2025 (PAHO) */}
         <div className="mt-16">
           <ChartCard
@@ -575,6 +627,50 @@ export function Epidemiologia() {
           <p className="mt-3 text-sm text-slate-600 max-w-3xl">
             PAHO emitió la alerta regional ante actividad inusual de EMPB en varios países durante el primer trimestre de 2025, con énfasis en la circulación de <strong className="text-brand-navy">EV-A71</strong> y sus complicaciones neurológicas.
           </p>
+        </div>
+
+        {/* CONTEXTO REGIONAL 2026 */}
+        <div className="mt-10">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500 mb-5">
+            Contexto regional 2026 · el brote es regional
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {regional2026.map((row) => (
+              <div
+                key={row.pais}
+                className="md:col-span-2 flex items-start gap-4 rounded-2xl border-2 border-amber-200/70 bg-amber-50/40 p-6"
+              >
+                <span className="text-4xl leading-none mt-0.5" aria-hidden>
+                  {row.flag}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-display text-base font-bold text-brand-navy leading-snug">
+                    {row.pais}
+                  </p>
+                  <div className="mt-1 flex items-baseline gap-3 flex-wrap">
+                    <span className="font-display font-extrabold tracking-tight leading-none text-5xl text-amber-700">
+                      {row.casos}
+                    </span>
+                    <span className="text-xs text-slate-600">{row.fecha}</span>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-700 leading-relaxed">
+                    {row.nota}
+                  </p>
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-wide text-slate-500">
+                    Fuente: {row.fuente}
+                  </p>
+                </div>
+              </div>
+            ))}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                Lectura regional
+              </p>
+              <p className="mt-3 text-sm text-slate-700 leading-relaxed">
+                El brote 2025–2026 no es exclusivo de Colombia. La región andina y el Caribe muestran <strong className="text-brand-navy">aumentos sostenidos de actividad enteroviral</strong>, con tipificación cada vez más frecuente de <strong className="text-brand-navy">EV-A71</strong> y serotipos atípicos.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Nota metodológica */}
