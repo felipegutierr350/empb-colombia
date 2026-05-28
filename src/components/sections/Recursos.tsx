@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { FileText, ClipboardList, BookOpen, Users, X, Download, Mail, Clock } from "lucide-react";
+import { FileText, ClipboardList, BookOpen, Users, X, Download } from "lucide-react";
 
 type RecursoKind = "link" | "anchor" | "modal-padres" | "modal-medicos";
 
