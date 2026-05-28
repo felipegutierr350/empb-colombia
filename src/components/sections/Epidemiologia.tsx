@@ -32,11 +32,23 @@ const BRAND = {
   amber: "#D97706",
 };
 
-const historico = [
-  { periodo: "2019", casos: 20 },
-  { periodo: "2020", casos: 20 },
-  { periodo: "2021", casos: 10 },
-  { periodo: "Q1 2022", casos: 204 },
+type HistoricoBar = {
+  periodo: string;
+  casos: number;
+  tone: "navy" | "accent" | "muted";
+  asterisk?: boolean;
+  notaTooltip: string;
+};
+
+const historico: HistoricoBar[] = [
+  { periodo: "2019", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022" },
+  { periodo: "2020", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022" },
+  { periodo: "2021", casos: 10, tone: "navy", notaTooltip: "INS · RENS 2022" },
+  { periodo: "Q1 2022", casos: 204, tone: "accent", notaTooltip: "INS · RENS 2022 · pico SE 13" },
+  { periodo: "2022*", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado posterior a Q1 2022" },
+  { periodo: "2023", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado" },
+  { periodo: "2024", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado" },
+  { periodo: "2025†", casos: 642, tone: "accent", asterisk: true, notaTooltip: "Suma territorial: Caldas 390 + Valle 170 + Cartagena 50 + Cali 32" },
 ];
 
 const porDepartamento = [
@@ -215,19 +227,19 @@ export function Epidemiologia() {
           description="Casos notificados al SIVIGILA, brotes territoriales 2025–2026 y la región de las Américas, según el INS, las secretarías de salud territoriales y la OPS/OMS."
         />
 
-        {/* GRÁFICO 1 — Histórico Colombia */}
+        {/* GRÁFICO 1 — Histórico Colombia + gap + 2025 agregado */}
         <ChartCard
           icon={<TrendingUp className="h-5 w-5" />}
-          kicker="Gráfico 1 · Colombia · histórico"
-          title="Casos notificados al SIVIGILA · 2019 – I trimestre 2022"
-          source="Fuente: INS Colombia · Velásquez A, Soto K, Quijada H. RENS 2022;4(4):4-19"
-          height={300}
+          kicker="Gráfico 1 · Colombia"
+          title="Casos notificados · 2019 – 2025"
+          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · DTS Caldas · INS comunicado Cartagena · Sec. Salud Valle · Consultor Salud (2025)"
+          height={320}
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={historico}
-              margin={{ top: 28, right: 12, left: 0, bottom: 0 }}
-              barCategoryGap="28%"
+              margin={{ top: 32, right: 12, left: 0, bottom: 0 }}
+              barCategoryGap="22%"
             >
               <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="periodo" tick={{ fill: "#475569", fontSize: 12 }} axisLine={false} tickLine={false} />
@@ -236,20 +248,66 @@ export function Epidemiologia() {
                 cursor={{ fill: "rgba(46,117,182,0.06)" }}
                 contentStyle={tooltipStyle}
                 labelStyle={{ color: BRAND.navy, fontWeight: 700 }}
-                formatter={(value) => [`${Number(value)} casos`, "Notificados"]}
+                formatter={(value, _name, item) => {
+                  const it = item.payload as HistoricoBar;
+                  if (it.tone === "muted") return ["Sin reporte INS consolidado", it.notaTooltip];
+                  return [`${Number(value)} casos`, it.notaTooltip];
+                }}
               />
               <Bar dataKey="casos" radius={[8, 8, 0, 0]}>
                 {historico.map((d, i) => (
-                  <Cell key={i} fill={i === historico.length - 1 ? BRAND.accent : BRAND.navy} />
+                  <Cell
+                    key={i}
+                    fill={
+                      d.tone === "accent" ? BRAND.accent : d.tone === "muted" ? "#e2e8f0" : BRAND.navy
+                    }
+                  />
                 ))}
-                <LabelList dataKey="casos" position="top" fill={BRAND.navy} fontSize={12} fontWeight={700} />
+                <LabelList
+                  dataKey="casos"
+                  position="top"
+                  fill={BRAND.navy}
+                  fontSize={12}
+                  fontWeight={700}
+                  formatter={(value) => {
+                    const n = Number(value);
+                    return n > 0 ? `${n}` : "—";
+                  }}
+                />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        <p className="mt-3 text-sm text-slate-600 max-w-3xl">
-          El primer trimestre de 2022 ya superaba <strong className="text-brand-navy">10× los casos anuales</strong> de los 3 años previos combinados, con un pico en la semana epidemiológica 13 de 2022.
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 text-xs">
+          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
+            <span className="h-3 w-3 rounded-sm bg-brand-navy" />
+            <span className="text-slate-700">INS · RENS 2022 (consolidado)</span>
+          </div>
+          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
+            <span className="h-3 w-3 rounded-sm bg-brand-accent" />
+            <span className="text-slate-700">Pico · agregado territorial</span>
+          </div>
+          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
+            <span className="h-3 w-3 rounded-sm bg-slate-200" />
+            <span className="text-slate-700">Sin reporte INS consolidado</span>
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-amber-200/70 bg-amber-50/60 p-5 text-sm leading-relaxed text-slate-700">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber-700 mb-2">
+            ⓘ Brecha de vigilancia 2022–2024
+          </p>
+          <p>
+            El INS <strong className="text-brand-navy">no publica</strong> una cifra anual consolidada de EMPB para 2022 completo, 2023 ni 2024 porque el evento se reporta bajo <strong className="text-brand-navy">Código 900 — Evento sin establecer</strong>. Los datos previos a Q1 2022 provienen del análisis geoespacial de Velásquez et al. (RENS 2022;4(4):4-19).
+          </p>
+          <p className="mt-2">
+            <strong>† La cifra 2025 (642+)</strong> es la <em>suma de comunicados territoriales</em> verificables (Caldas 390 a SE 20 · Valle del Cauca &gt;170 · Cartagena 50 · Cali 32) y <strong>NO representa un total nacional consolidado</strong>. Cifras adicionales reportadas en Pereira, Boyacá (18 brotes), Bogotá (Circular 008/2024) y otros departamentos quedan fuera por no tener un denominador comparable.
+          </p>
+        </div>
+
+        <p className="mt-4 text-sm text-slate-600 max-w-3xl">
+          El primer trimestre de 2022 ya superaba <strong className="text-brand-navy">10× los casos anuales</strong> de los 3 años previos combinados, con pico en la semana epidemiológica 13/2022. La caracterización molecular nacional sistemática es el objetivo del estudio EMPB Colombia en curso.
         </p>
 
         {/* STAT CARDS DEMOGRÁFICAS */}
