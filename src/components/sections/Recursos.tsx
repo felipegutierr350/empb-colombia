@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { FileText, ClipboardList, BookOpen, Users, X, Download } from "lucide-react";
+import { FileText, ClipboardList, BookOpen, Users, X, Download, Mail, Clock } from "lucide-react";
 
 type RecursoKind = "link" | "anchor" | "modal-padres" | "modal-medicos";
 
@@ -38,7 +38,7 @@ const recursos: Recurso[] = [
     icon: Users,
     title: "Material educativo para padres",
     body: "Recomendaciones de manejo en casa, signos de alarma y prevención de contagio.",
-    cta: "Ver infografía",
+    cta: "Ver disponibilidad",
     kind: "modal-padres",
   },
   {
@@ -93,28 +93,22 @@ export function Recursos() {
 
       {modal === "padres" && (
         <Modal onClose={() => setModal(null)} title="Material educativo para padres">
-          <div className="relative w-full">
-            <Image
-              src="/educativo/padres.png"
-              alt="Infografía educativa para padres y cuidadores sobre la enfermedad mano-pie-boca, con secciones de definición, síntomas, signos de alarma y cuidados en casa."
-              width={1600}
-              height={1000}
-              sizes="(min-width: 1024px) 900px, 100vw"
-              className="h-auto w-full rounded-lg"
-              priority
-            />
-          </div>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-slate-500 italic">
-              Material educativo del estudio EMPB Colombia. Fuentes: CDC, AAP, KidsHealth/Nemours, Mayo Clinic, AEPED.
+          <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-10 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal/15 text-brand-teal">
+              <Clock className="h-6 w-6" />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-bold text-brand-navy tracking-tight">
+              En preparación
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 max-w-md mx-auto">
+              La infografía educativa para padres y cuidadores se publicará próximamente en este sitio.
             </p>
             <a
-              href="/educativo/padres.png"
-              download="EMPB-Colombia-material-padres.png"
-              className="inline-flex items-center gap-2 rounded-xl bg-brand-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy-deep transition self-start sm:self-auto"
+              href="mailto:ifgutierrez@colsanitas.com?subject=Solicitud%20de%20material%20educativo%20para%20padres%20%E2%80%94%20EMPB%20Colombia"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border-2 border-brand-navy bg-transparent px-5 py-2.5 text-sm font-semibold text-brand-navy hover:bg-brand-navy hover:text-white transition"
             >
-              <Download className="h-4 w-4" />
-              Descargar imagen
+              <Mail className="h-4 w-4" />
+              Solicitar acceso anticipado
             </a>
           </div>
         </Modal>
