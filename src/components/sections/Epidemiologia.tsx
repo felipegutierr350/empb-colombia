@@ -36,21 +36,16 @@ const BRAND = {
 type HistoricoBar = {
   periodo: string;
   casos: number;
-  tone: "navy" | "accent" | "muted";
-  asterisk?: boolean;
+  tone: "navy" | "accent";
   notaTooltip: string;
 };
 
 const historico: HistoricoBar[] = [
-  { periodo: "2019", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022" },
-  { periodo: "2020", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022" },
-  { periodo: "2021", casos: 10, tone: "navy", notaTooltip: "INS · RENS 2022" },
-  { periodo: "Q1 2022", casos: 204, tone: "accent", notaTooltip: "INS · RENS 2022 · pico SE 13" },
-  { periodo: "2022*", casos: 0, tone: "muted", notaTooltip: "Sin reporte INS anual consolidado posterior a Q1 2022. INS confirma brotes en Santander, Caldas, Cundinamarca y Norte de Santander." },
-  { periodo: "2023‡", casos: 43, tone: "navy", notaTooltip: "BES INS SE 21/2023 · Tabla 1 · 43 observados vs 89 esperados (razón 0,48 · por debajo del histórico)" },
-  { periodo: "2024", casos: 0, tone: "muted", notaTooltip: "Sin tematización EMPB en BES INS 2024 revisados (SE 13, 25, 49)" },
-  { periodo: "2025†", casos: 723, tone: "accent", asterisk: true, notaTooltip: "Suma territorial: Caldas 390 + Valle 170 + Dosquebradas 81 + Cartagena 50 + Cali 32" },
-  { periodo: "2026§", casos: 2, tone: "navy", notaTooltip: "Boyacá · 2 brotes a marzo 2026 (Sec. Salud Boyacá) — datos preliminares" },
+  { periodo: "2019", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022;4(4):4-19" },
+  { periodo: "2020", casos: 20, tone: "navy", notaTooltip: "INS · RENS 2022;4(4):4-19" },
+  { periodo: "2021", casos: 10, tone: "navy", notaTooltip: "INS · RENS 2022;4(4):4-19" },
+  { periodo: "Q1 2022", casos: 204, tone: "navy", notaTooltip: "INS · RENS 2022;4(4):4-19 · pico SE 13" },
+  { periodo: "2025†", casos: 723, tone: "accent", notaTooltip: "Suma territorial: Caldas 390 + Valle 170 + Dosquebradas 81 + Cartagena 50 + Cali 32" },
 ];
 
 const porDepartamento = [
@@ -254,8 +249,8 @@ export function Epidemiologia() {
         <ChartCard
           icon={<TrendingUp className="h-5 w-5" />}
           kicker="Gráfico 1 · Colombia"
-          title="Casos notificados · 2019 – 2026"
-          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · INS BES SE 21/2023 Tabla 1 (2023) · DTS Caldas · INS comunicado Cartagena · Sec. Salud Valle · Alcaldía Dosquebradas (2025) · Sec. Salud Boyacá (2026)"
+          title="Casos notificados · histórico 2019–2022 y agregado territorial 2025"
+          source="Fuentes: INS RENS 2022;4(4):4-19 (2019–Q1 2022) · DTS Caldas · Sec. Salud Valle · Alcaldía Dosquebradas · INS comunicado Cartagena · Consultor Salud (2025)"
           height={320}
         >
           <ResponsiveContainer width="100%" height="100%">
@@ -273,7 +268,6 @@ export function Epidemiologia() {
                 labelStyle={{ color: BRAND.navy, fontWeight: 700 }}
                 formatter={(value, _name, item) => {
                   const it = item.payload as HistoricoBar;
-                  if (it.tone === "muted") return ["Sin reporte INS consolidado", it.notaTooltip];
                   return [`${Number(value)} casos`, it.notaTooltip];
                 }}
               />
@@ -281,9 +275,7 @@ export function Epidemiologia() {
                 {historico.map((d, i) => (
                   <Cell
                     key={i}
-                    fill={
-                      d.tone === "accent" ? BRAND.accent : d.tone === "muted" ? "#e2e8f0" : BRAND.navy
-                    }
+                    fill={d.tone === "accent" ? BRAND.accent : BRAND.navy}
                   />
                 ))}
                 <LabelList
@@ -302,47 +294,23 @@ export function Epidemiologia() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-3 text-xs">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 text-xs">
           <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
             <span className="h-3 w-3 rounded-sm bg-brand-navy" />
-            <span className="text-slate-700">INS · RENS 2022 (consolidado)</span>
+            <span className="text-slate-700">Histórico · INS RENS 2022</span>
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
             <span className="h-3 w-3 rounded-sm bg-brand-accent" />
-            <span className="text-slate-700">Pico · agregado territorial</span>
-          </div>
-          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
-            <span className="h-3 w-3 rounded-sm bg-slate-200" />
-            <span className="text-slate-700">Sin reporte INS consolidado</span>
+            <span className="text-slate-700">Agregado territorial 2025 (†)</span>
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-amber-200/70 bg-amber-50/60 p-5 text-sm leading-relaxed text-slate-700">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber-700 mb-2">
-            ⓘ Notas sobre la vigilancia 2022–2025
-          </p>
-          <p>
-            La EMPB se reporta bajo el evento <strong className="text-brand-navy">Código 900 — Evento sin establecer</strong> de SIVIGILA, por lo que el INS no publica cifras anuales consolidadas de forma rutinaria. Los datos visibles aquí provienen de las publicaciones específicas en las que el INS sí caracterizó EMPB.
-          </p>
-          <p className="mt-2">
-            <strong>‡ 2023:</strong> En la <em>Tabla 1 del BES SE 21/2023</em>, el INS reportó <strong className="text-brand-navy">43 casos observados</strong> a SE 20 contra 89 esperados (razón 0,48 — por debajo del histórico). Año relativamente más tranquilo tras el pico de 2022.
-          </p>
-          <p className="mt-2">
-            <strong>* 2022 (resto):</strong> sin cifra anual publicada. El INS sí confirma textualmente brotes en Santander, Caldas, Cundinamarca y Norte de Santander durante 2022.
-          </p>
-          <p className="mt-2">
-            <strong>† 2025 (723+):</strong> <em>suma de comunicados territoriales</em> verificables (Caldas 390 a SE 20 · Valle del Cauca &gt;170 · Dosquebradas 81 · Cartagena 50 · Cali 32). <strong>NO es un total nacional consolidado.</strong>
-          </p>
-          <p className="mt-2">
-            <strong>§ 2026:</strong> Boyacá reporta <strong>2 brotes a marzo 2026</strong> (Sec. Salud Boyacá). Datos preliminares — el resto del país aún sin reporte INS consolidado para 2026.
-          </p>
-          <p className="mt-3 pt-3 border-t border-amber-200/60">
-            <strong className="text-brand-navy">Departamentos con brotes verificados durante 2025–2026:</strong> Caldas · Valle del Cauca · Bolívar (Cartagena) · Risaralda (Pereira + Dosquebradas) · Bogotá · Cundinamarca (Cajicá) · Boyacá (16 brotes en 13 municipios) · Atlántico. <em>Los departamentos sin cifra puntual no se incluyen en el agregado 723+.</em>
-          </p>
-        </div>
-
-        <p className="mt-4 text-sm text-slate-600 max-w-3xl">
+        <p className="mt-5 text-sm text-slate-600 max-w-3xl">
           El primer trimestre de 2022 ya superaba <strong className="text-brand-navy">10× los casos anuales</strong> de los 3 años previos combinados, con pico en la semana epidemiológica 13/2022. La caracterización molecular nacional sistemática es el objetivo del estudio EMPB Colombia en curso.
+        </p>
+
+        <p className="mt-3 text-sm text-slate-600 max-w-3xl">
+          <strong>† 2025 · 723 casos:</strong> suma de comunicados territoriales verificables (Caldas 390 · Valle del Cauca &gt;170 · Dosquebradas 81 · Cartagena 50 · Cali 32). <strong className="text-brand-navy">Departamentos adicionales con brotes verificados:</strong> Bolívar, Bogotá, Cundinamarca (Cajicá), Boyacá (16 brotes en 13 municipios), Atlántico.
         </p>
 
         {/* STAT CARDS DEMOGRÁFICAS */}
