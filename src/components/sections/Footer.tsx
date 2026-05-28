@@ -10,7 +10,7 @@ export function Footer() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between sm:gap-10">
             <div className="leading-snug">
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-500">
-                Con la participación y apoyo
+                Con la participación
               </p>
               <p className="mt-2 font-display text-sm sm:text-base font-bold text-brand-navy tracking-tight">
                 Centros médicos y Clínica Infantil Colsubsidio
